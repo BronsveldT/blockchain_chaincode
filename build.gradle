@@ -1,0 +1,68 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'application'
+    id 'jacoco'
+    id 'java'
+}
+
+group = 'org.capgemini'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+application {
+    mainClass = 'org.hyperledger.fabric.contract.ContractRouter'
+}
+
+dependencies {
+    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.+'
+    implementation 'org.json.json:+'
+    implementation 'com.owlike:genson:1.5'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+jacocoTestReport {
+    dependsOn test
+}
+
+jacocoTestCoverageVerification {
+    violationRules{
+        rule{
+            limit{
+                minimum = 0.9
+            }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+shadowJar {
+    archiveBaseName = 'chaincode'
+    archiveVersion = ''
+    archiveClassifier = ''
+    mergeServiceFiles()
+
+    manifest {
+        attributes 'Main-class' : 'org.hyperledger.fabric.contract.ContractRouter'
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
+installDist.dependsOn check

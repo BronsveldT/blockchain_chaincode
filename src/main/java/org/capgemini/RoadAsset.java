@@ -8,16 +8,34 @@ import java.util.Objects;
 
 @DataType()
 public class RoadAsset {
-    @Property() private final String roadId;
+    @Property() private String roadId;
     @Property() private final String roadAdminType;
     @Property() private final String streetName;
     @Property() private final int adminNumber;
-    @Property() private final double distanceTravelledOn;
+    @Property() private double distanceTravelledOn;
     @Property() private final String adminName;
     @Property() private final String roadAdminName;
     @Property() private final String municipality;
     @Property() private final String state;
 
+    public RoadAsset( @JsonProperty("roadAdminType") String roadAdminType,
+                      @JsonProperty("streetName") String streetName,
+                      @JsonProperty("adminNumber") int adminNumber,
+                      @JsonProperty("distanceTravelledOn") double distanceTravelledOn,
+                      @JsonProperty("adminName") String adminName,
+                      @JsonProperty("roadAdminName") String roadAdminName,
+                      @JsonProperty("municipality") String municipality,
+                      @JsonProperty("state") String state) {
+
+        this.roadAdminType = roadAdminType;
+        this.streetName = streetName;
+        this.adminNumber = adminNumber;
+        this.distanceTravelledOn = distanceTravelledOn;
+        this.adminName = adminName;
+        this.roadAdminName = roadAdminName;
+        this.municipality = municipality;
+        this.state = state;
+    }
 
     public RoadAsset( @JsonProperty("roadAssetId")String roadId,
                       @JsonProperty("roadAdminType") String roadAdminType,
@@ -74,6 +92,14 @@ public class RoadAsset {
 
     public String getState() {
         return state;
+    }
+
+    public void setRoadId(String roadId) {
+        this.roadId = roadId;
+    }
+
+    public void addDistanceTravelledOn(double distance) {
+        this.distanceTravelledOn += distance;
     }
 
     @Override

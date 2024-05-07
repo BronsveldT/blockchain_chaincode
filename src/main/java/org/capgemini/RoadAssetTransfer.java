@@ -9,7 +9,7 @@ import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 @Contract(
-        name = "driverAsset",
+        name = "roadAsset",
         info = @Info(
                 title = "Driver Asset Transfer",
                 description = "Capgemini initial contract for driver assets",
@@ -56,19 +56,17 @@ public class RoadAssetTransfer implements ContractInterface {
      */
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public RoadAsset createRoadAsset(final Context ctx,
+                                     final String roadId,
                                      final String roadAdminType,
                                      final String streetName,
                                      final int adminNumber,
                                      final double distanceTravelledOn,
                                      final String adminName,
                                      final String roadAdminName,
-                                     final  String municipality,
+                                     final String municipality,
                                      final String state) {
 
-        String roadId = streetName + adminNumber + roadAdminType;
         ChaincodeStub stub = ctx.getStub();
-
-
         if(roadAssetExists(ctx, roadId)){
             String errorMessages = String.format("Asset %s already exists", roadId);
             System.out.println(errorMessages);
@@ -115,38 +113,21 @@ public class RoadAssetTransfer implements ContractInterface {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public RoadAsset updateRoadAsset(final Context ctx,
-                                     final String roadAdminType,
-                                     final String streetName,
-                                     final int adminNumber,
-                                     final double distanceTravelledOn,
-                                     final String adminName,
-                                     final String roadAdminName,
-                                     final  String municipality,
-                                     final String state) {
+                                     final String roadId,
+                                     final double distanceTravelledOn) {
 
-        String roadId = streetName + adminNumber + roadAdminType;
         ChaincodeStub stub = ctx.getStub();
 
-        if(!roadAssetExists(ctx, roadAdminType)){
-            String errorMessages = String.format("Asset %s does not exist", roadAdminType);
+        if(!roadAssetExists(ctx, roadId)){
+            String errorMessages = String.format("Asset %s does not exist", roadId);
             System.out.println(errorMessages);
             throw new ChaincodeException(errorMessages, AssetTransferErrors.ASSET_NOT_FOUND.toString());
         }
-
-        RoadAsset roadAsset = new RoadAsset(
-                roadId,
-                roadAdminType,
-                streetName,
-                adminNumber,
-                distanceTravelledOn,
-                adminName,
-                roadAdminName,
-                municipality,
-                state
-        );
-
+        String assetJSON =  stub.getStringState(roadId);
+        RoadAsset roadAsset = genson.deserialize(assetJSON, RoadAsset.class);
+        roadAsset.addDistanceTravelledOn(distanceTravelledOn);
         String sortedJson = genson.serialize(roadAsset);
-        stub.putStringState(roadId, sortedJson);
+        stub.putStringState(roadAsset.getRoadId(), sortedJson);
         return roadAsset;
     }
 

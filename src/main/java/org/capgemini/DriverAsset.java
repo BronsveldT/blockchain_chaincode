@@ -13,22 +13,26 @@ public class DriverAsset {
     private final String driverAssetId;
 
     @Property()
-    private final String licensePlate;
+    private String licensePlate;
 
     @Property()
-    private final String brand;
+    private String brand;
     @Property()
-    private final String emissionType;
+    private String emissionType;
     @Property()
-    private final int[] drivenKilometersOnRoad;
+    private double[] drivenKilometersOnRoad;
     @Property()
-    private final double rideCosts;
+    private double rideCosts;
+
+    public DriverAsset(@JsonProperty("driverAssetId") String driverAssetId) {
+        this.driverAssetId = driverAssetId;
+    }
 
     public DriverAsset(@JsonProperty("driverAssetId") String driverAssetId,
                        @JsonProperty("licensePlate") String licensePlate,
                        @JsonProperty("brand") String brand,
                        @JsonProperty("emissionType") String emissionType,
-                       @JsonProperty("drivenKilometersOnRoad") int[] drivenKilometersOnRoad,
+                       @JsonProperty("drivenKilometersOnRoad") double[] drivenKilometersOnRoad,
                        @JsonProperty("rideCosts") double rideCosts) {
 
         this.driverAssetId = driverAssetId;
@@ -55,8 +59,15 @@ public class DriverAsset {
         return emissionType;
     }
 
-    public int[] getDrivenKilometersOnRoad() {
+    public double[] getDrivenKilometersOnRoad() {
         return drivenKilometersOnRoad;
+    }
+
+    public void addDrivenKilometersOnRoad(double[] drivenKilometers) {
+
+        for (int i = 0; i < drivenKilometersOnRoad.length; i++) {
+            drivenKilometersOnRoad[i] += drivenKilometers[i];
+        }
     }
 
     public double getRideCosts() {

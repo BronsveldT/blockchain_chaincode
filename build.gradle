@@ -32,8 +32,10 @@ dependencies {
     implementation 'com.owlike:genson:1.5'
     testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation 'org.mockito:mockito-core:2.+'
+    testImplementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.+'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+//    testRunTimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 //
 //jacocoTestReport {
@@ -50,12 +52,12 @@ dependencies {
 //    }
 //}
 
-//test {
-//    useJUnitPlatform()
-//    testLogging {
-//        events "passed", "skipped", "failed"
-//    }
-//}
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
 
 //mainClass = 'org.hyperledger.fabric.contract.ContractRouter'
 

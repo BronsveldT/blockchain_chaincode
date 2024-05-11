@@ -1,9 +1,10 @@
 import org.capgemini.RoadAsset;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.annotation.Testable;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+@Testable
 public final class RoadAssetTest {
 
     @Nested
@@ -152,6 +153,7 @@ public final class RoadAssetTest {
     @Test
     public void toStringIdentifiesRoadAsset() {
         RoadAsset roadAsset = new RoadAsset(
+                "RoadAsset1",
                 "G",
                 "Havenstraat",
                 945,
@@ -161,7 +163,9 @@ public final class RoadAssetTest {
                 "Zaanstad",
                 "Noord-Holland"
         );
-        System.out.println(roadAsset.toString());
-        assertThat(roadAsset.toString()).isEqualTo("RoadAsset@e04f6c53 [RoadAssetID=RoadAsset1, color=Blue, size=20, owner=Guy, appraisedValue=100]");
+        assertThat(roadAsset.toString()).isEqualTo("RoadAsset@63ec22ba [roadAssetId=RoadAsset1, roadAdminType=G, " +
+                "streetName=Havenstraat, adminNumber=945, " +
+                "distanceTravelledOn=22.05, adminName=Zaandam, " +
+                "roadAdminName=Zaanstad, municipality=Zaanstad, state=Noord-Holland]");
     }
 }

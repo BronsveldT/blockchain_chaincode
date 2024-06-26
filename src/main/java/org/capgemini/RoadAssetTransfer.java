@@ -11,8 +11,8 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 @Contract(
         name = "basic",
         info = @Info(
-                title = "Driver Asset Transfer",
-                description = "Capgemini initial contract for driver assets",
+                title = "Road Asset transfer",
+                description = "Capgemini initial contract for road assets",
                 version = "0.0.1-SNAPSHOT",
                 license = @License(
                         name = "Capgemini"

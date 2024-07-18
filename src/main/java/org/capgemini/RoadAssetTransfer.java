@@ -7,6 +7,11 @@ import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Contract(
         name = "basic",
@@ -132,6 +137,103 @@ public class RoadAssetTransfer implements ContractInterface {
         return roadAsset;
     }
 
+    /**
+     *
+     * @param ctx
+     * @param roadName
+     * @return A list of roadAssets that go by the roadName
+     */
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public List<RoadAsset> retrieveRoadAssetsByName(Context ctx, String roadName) {
+
+
+        String queryString = String.format("{\"selector\":{\"streetName\":\"%s\"}}", roadName);
+
+        QueryResultsIterator<KeyValue> results = ctx.getStub().getQueryResult(queryString);
+
+        List<RoadAsset> roads = new ArrayList<>();
+
+        for (KeyValue keyValue : results) {
+            RoadAsset roadAsset = genson.deserialize(keyValue.getValue(), RoadAsset.class);
+            roads.add(roadAsset);
+        }
+
+        return roads;
+    }
+
+    /**
+     *
+     * @param ctx
+     * @param municipalityName
+     * @return A list of roadAssets that go by the roadName
+     */
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public List<RoadAsset> retrieveRoadAssetsByMunicipality(Context ctx, String municipalityName) {
+
+
+        String queryString = String.format("{\"selector\":{\"municipality\":\"%s\"}}", municipalityName);
+
+        QueryResultsIterator<KeyValue> results = ctx.getStub().getQueryResult(queryString);
+
+        List<RoadAsset> roads = new ArrayList<>();
+        System.out.println(results);
+        for (KeyValue keyValue : results) {
+            System.out.println(keyValue);
+            RoadAsset roadAsset = genson.deserialize(keyValue.getValue(), RoadAsset.class);
+            System.out.println(roadAsset);
+            roads.add(roadAsset);
+        }
+        System.out.println(roads);
+        return roads;
+    }
+
+    /**
+     *
+     * @param ctx
+     * @param roadAdminType
+     * @return A list of roadAssets that go by the roadName
+     */
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public List<RoadAsset> retrieveRoadAssetsByAdminType(Context ctx, String roadAdminType) {
+
+
+        String queryString = String.format("{\"selector\":{\"roadAdminType\":\"%s\"}}", roadAdminType);
+
+        QueryResultsIterator<KeyValue> results = ctx.getStub().getQueryResult(queryString);
+
+        List<RoadAsset> roads = new ArrayList<>();
+
+        for (KeyValue keyValue : results) {
+            RoadAsset roadAsset = genson.deserialize(keyValue.getValue(), RoadAsset.class);
+            roads.add(roadAsset);
+        }
+
+        return roads;
+    }
+
+    /**
+     *
+     * @param ctx
+     * @param state
+     * @return A list of roadAssets that go by the roadName
+     */
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public List<RoadAsset> retrieveRoadAssetsByState(Context ctx, String state) {
+
+
+        String queryString = String.format("{\"selector\":{\"state\":\"%s\"}}", state);
+
+        QueryResultsIterator<KeyValue> results = ctx.getStub().getQueryResult(queryString);
+
+        List<RoadAsset> roads = new ArrayList<>();
+
+        for (KeyValue keyValue : results) {
+            RoadAsset roadAsset = genson.deserialize(keyValue.getValue(), RoadAsset.class);
+            roads.add(roadAsset);
+        }
+
+        return roads;
+    }
     /**
      *
      * @param ctx
